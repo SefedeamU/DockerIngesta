@@ -56,8 +56,8 @@ def save_to_s3(session, data, bucket_name, file_name):
 
 def main():
     # Variables de entorno para la configuración
-    table_name = os.getenv('DYNAMODB_TABLE_5')
-    bucket_name = os.getenv('S3_BUCKET')
+    table_name = os.getenv('DYNAMODB_TABLE_5_TEST')
+    bucket_name = os.getenv('S3_BUCKET_TEST')
     file_format = os.getenv('FILE_FORMAT', 'csv')
     
     if not table_name or not bucket_name:

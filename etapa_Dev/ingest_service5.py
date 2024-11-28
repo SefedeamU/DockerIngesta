@@ -56,12 +56,12 @@ def save_to_s3(session, data, bucket_name, file_name):
 
 def main():
     # Variables de entorno para la configuración
-    table_name = os.getenv('DYNAMODB_TABLE_1')
-    bucket_name = os.getenv('S3_BUCKET')
+    table_name = os.getenv('DYNAMODB_TABLE_5_DEV')
+    bucket_name = os.getenv('S3_BUCKET_DEV')
     file_format = os.getenv('FILE_FORMAT', 'csv')
     
     if not table_name or not bucket_name:
-        print("Error: DYNAMODB_TABLE_1 y S3_BUCKET son obligatorios.")
+        print("Error: DYNAMODB_TABLE_5 y S3_BUCKET son obligatorios.")
         return
 
     print("Iniciando sesión de boto3...")
