@@ -4,30 +4,33 @@ services:
   ingest1:
     build: .
     environment:
-      - DYNAMODB_TABLE=table1
-      - S3_BUCKET=bucket-dev
-      - FILE_FORMAT=csv
+      - DYNAMODB_TABLE=${DYNAMODB_TABLE_1}
+      - S3_BUCKET=${S3_BUCKET}
+      - FILE_FORMAT=${FILE_FORMAT}
   ingest2:
     build: .
     environment:
-      - DYNAMODB_TABLE=table2
-      - S3_BUCKET=bucket-dev
-      - FILE_FORMAT=json
+      - DYNAMODB_TABLE=${DYNAMODB_TABLE_2}
+      - S3_BUCKET=${S3_BUCKET}
+      - FILE_FORMAT=${FILE_FORMAT}
   ingest3:
     build: .
     environment:
-      - DYNAMODB_TABLE=table3
-      - S3_BUCKET=bucket-dev
-      - FILE_FORMAT=csv
+      - DYNAMODB_TABLE=${DYNAMODB_TABLE_3}
+      - S3_BUCKET=${S3_BUCKET}
+      - FILE_FORMAT=${FILE_FORMAT}
   ingest4:
     build: .
     environment:
-      - DYNAMODB_TABLE=table4
-      - S3_BUCKET=bucket-dev
-      - FILE_FORMAT=json
+      - DYNAMODB_TABLE=${DYNAMODB_TABLE_4}
+      - S3_BUCKET=${S3_BUCKET}
+      - FILE_FORMAT=${FILE_FORMAT}
   ingest5:
     build: .
     environment:
-      - DYNAMODB_TABLE=table5
-      - S3_BUCKET=bucket-dev
-      - FILE_FORMAT=csv
+      - DYNAMODB_TABLE=${DYNAMODB_TABLE_5}
+      - S3_BUCKET=${S3_BUCKET}
+      - FILE_FORMAT=${FILE_FORMAT}
+
+env_file:
+  - .env

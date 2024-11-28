@@ -4,6 +4,7 @@ import json
 import os
 from botocore.config import Config
 from botocore.exceptions import BotoCoreError, NoCredentialsError
+from dotenv import load_dotenv
 
 def create_boto3_session():
     """Crea una sesión de boto3 usando un rol IAM y una región específica."""
@@ -55,12 +56,12 @@ def save_to_s3(session, data, bucket_name, file_name):
 
 def main():
     # Variables de entorno para la configuración
-    table_name = os.getenv('DYNAMODB_TABLE')
+    table_name = os.getenv('DYNAMODB_TABLE_1')
     bucket_name = os.getenv('S3_BUCKET')
     file_format = os.getenv('FILE_FORMAT', 'csv')
     
     if not table_name or not bucket_name:
-        print("Error: DYNAMODB_TABLE y S3_BUCKET son obligatorios.")
+        print("Error: DYNAMODB_TABLE_1 y S3_BUCKET son obligatorios.")
         return
 
     print("Iniciando sesión de boto3...")
