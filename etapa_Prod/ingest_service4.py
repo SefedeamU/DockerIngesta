@@ -6,6 +6,9 @@ from botocore.config import Config
 from botocore.exceptions import BotoCoreError, NoCredentialsError
 from dotenv import load_dotenv
 
+# Cargar las variables de entorno desde el archivo .env
+load_dotenv()
+
 def create_boto3_session():
     """Crea una sesión de boto3 usando un rol IAM y una región específica."""
     try:
@@ -54,14 +57,41 @@ def save_to_s3(session, data, bucket_name, file_name):
     s3 = session.client('s3')
     s3.put_object(Bucket=bucket_name, Key=file_name, Body=data)
 
+def create_glue_crawler(session, crawler_name, s3_target, role, database_name):
+    """Crea un crawler de AWS Glue."""
+    glue = session.client('glue')
+    try:
+        glue.create_crawler(
+            Name=crawler_name,
+            Role=role,
+            DatabaseName=database_name,
+            Targets={'S3Targets': [{'Path': s3_target}]},
+            SchemaChangePolicy={
+                'UpdateBehavior': 'UPDATE_IN_DATABASE',
+                'DeleteBehavior': 'DEPRECATE_IN_DATABASE'
+            }
+        )
+        print(f"Crawler {crawler_name} creado exitosamente.")
+    except glue.exceptions.AlreadyExistsException:
+        print(f"Crawler {crawler_name} ya existe.")
+
+def start_glue_crawler(session, crawler_name):
+    """Inicia un crawler de AWS Glue."""
+    glue = session.client('glue')
+    glue.start_crawler(Name=crawler_name)
+    print(f"Crawler {crawler_name} iniciado.")
+
 def main():
     # Variables de entorno para la configuración
     table_name = os.getenv('DYNAMODB_TABLE_4_PROD')
     bucket_name = os.getenv('S3_BUCKET_PROD')
     file_format = os.getenv('FILE_FORMAT', 'csv')
+    role = os.getenv('AWS_ROLE_ARN')
+    glue_database = f"glue_database_{table_name}_PROD"
+    glue_crawler_name = f"crawler_{table_name}_PROD"
     
     if not table_name or not bucket_name:
-        print("Error: DYNAMODB_TABLE_4 y S3_BUCKET son obligatorios.")
+        print("Error: DYNAMODB_TABLE_4_PROD y S3_BUCKET_PROD son obligatorios.")
         return
 
     print("Iniciando sesión de boto3...")
@@ -82,6 +112,11 @@ def main():
     save_to_s3(session, data, bucket_name, file_name)
     
     print(f"Ingesta de datos completada. Archivo subido a S3: {file_name}")
+    
+    # Crear y ejecutar el crawler de AWS Glue
+    s3_target = f"s3://{bucket_name}/{file_name}"
+    create_glue_crawler(session, glue_crawler_name, s3_target, role, glue_database)
+    start_glue_crawler(session, glue_crawler_name)
 
 if __name__ == "__main__":
     main()

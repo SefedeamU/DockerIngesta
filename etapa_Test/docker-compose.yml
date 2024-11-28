@@ -31,6 +31,7 @@ services:
       - DYNAMODB_TABLE=${DYNAMODB_TABLE_5_TEST}
       - S3_BUCKET=${S3_BUCKET_TEST}
       - FILE_FORMAT=${FILE_FORMAT}
+  
 
 env_file:
   - .env
