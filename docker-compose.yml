@@ -1,0 +1,33 @@
+version: '3.8'
+
+services:
+  ingest1:
+    build: .
+    environment:
+      - DYNAMODB_TABLE=table1
+      - S3_BUCKET=bucket-dev
+      - FILE_FORMAT=csv
+  ingest2:
+    build: .
+    environment:
+      - DYNAMODB_TABLE=table2
+      - S3_BUCKET=bucket-dev
+      - FILE_FORMAT=json
+  ingest3:
+    build: .
+    environment:
+      - DYNAMODB_TABLE=table3
+      - S3_BUCKET=bucket-dev
+      - FILE_FORMAT=csv
+  ingest4:
+    build: .
+    environment:
+      - DYNAMODB_TABLE=table4
+      - S3_BUCKET=bucket-dev
+      - FILE_FORMAT=json
+  ingest5:
+    build: .
+    environment:
+      - DYNAMODB_TABLE=table5
+      - S3_BUCKET=bucket-dev
+      - FILE_FORMAT=csv
